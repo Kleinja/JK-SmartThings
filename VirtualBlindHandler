@@ -4,10 +4,10 @@
 *
 */
 metadata {
-	definition (name: "J-Innovations Blind Controller", namespace: "smartthings/testing", author: "SmartThings") {
+	definition (name: "Virtrual Blind Controller", namespace: "smartthings/testing", author: "SmartThings") {
 		capability "Actuator"
 		capability "Door Control"
-        capability "Garage Door Control"
+        	capability "Garage Door Control"
 		capability "Contact Sensor"
 		capability "Refresh"
 		capability "Sensor"
@@ -44,12 +44,12 @@ def parse(String description) {
 
 def open() {
 	sendEvent(name: "door", value: "opening")
-    runIn(6, finishOpening)
+    runIn(1, finishOpening)
 }
 
 def close() {
     sendEvent(name: "door", value: "closing")
-	runIn(6, finishClosing)
+	runIn(1, finishClosing)
 }
 
 def finishOpening() {

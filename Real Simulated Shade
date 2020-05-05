@@ -1,17 +1,4 @@
-/**
- *  Copyright 2018, 2019 SmartThings
- *
- *  Provides a simulated window shade.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- *  in compliance with the License. You may obtain a copy of the License at:
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
- *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
- *  for the specific language governing permissions and limitations under the License.
- *
+/*
  */
 import groovy.json.JsonOutput
 
@@ -23,39 +10,24 @@ metadata {
 		//capability "Switch Level"
 
 		// Commands to use in the simulator
-		command "openPartially"
-		command "closePartially"
 		command "partiallyOpen"
-		command "opening"
-		command "closing"
 		command "opened"
 		command "closed"
-		command "unknown"
 	}
 
 	preferences {
 		section {
 			input("actionDelay", "number",
 				title: "Action Delay\n\nAn emulation for how long it takes the window shade to perform the requested action.",
-				description: "In seconds (1-120; default if empty: 5 sec)",
-				range: "1..120", displayDuringSetup: false)
+				description: "In seconds (1-10; default if empty: 1 sec)",
+				range: "1..10", displayDuringSetup: false)
 		}
 		section {
 			input("supportedCommands", "enum",
 				title: "Supported Commands\n\nThis controls the value for supportedWindowShadeCommands.",
-				description: "open, close, pause", defaultValue: "2", multiple: false,
+				description: "open, close, pause", defaultValue: "1", multiple: false,
 				options: [
 					"1": "open, close",
-					"2": "open, close, pause",
-					"3": "open",
-					"4": "close",
-					"5": "pause",
-					"6": "open, pause",
-					"7": "close, pause",
-					"8": "<empty list>",
-					// For testing OCF/mobile client bugs
-					"9": "open, closed, pause",
-					"10": "open, closed, close, pause"
 				]
 			)
 		}
@@ -132,21 +104,11 @@ metadata {
 private getSupportedCommandsMap() {
 	[
 		"1": ["open", "close"],
-		"2": ["open", "close", "pause"],
-		"3": ["open"],
-		"4": ["close"],
-		"5": ["pause"],
-		"6": ["open", "pause"],
-		"7": ["close", "pause"],
-		"8": [],
-		// For testing OCF/mobile client bugs
-		"9": ["open", "closed", "pause"],
-		"10": ["open", "closed", "close", "pause"]
 	]
 }
 
 private getShadeActionDelay() {
-	(settings.actionDelay != null) ? settings.actionDelay : 5
+	(settings.actionDelay != null) ? settings.actionDelay : 1
 }
 
 def installed() {
@@ -206,18 +168,6 @@ def presetPosition() {
 
 // Custom test commands
 
-def openPartially() {
-	log.debug "openPartially()"
-	opening()
-	runIn(shadeActionDelay, "partiallyOpen")
-}
-
-def closePartially() {
-	log.debug "closePartially()"
-	closing()
-	runIn(shadeActionDelay, "partiallyOpen")
-}
-
 def partiallyOpen() {
 	log.debug "windowShade: partially open"
 	sendEvent(name: "windowShade", value: "partially open", isStateChange: true)
@@ -243,8 +193,3 @@ def closed() {
 	sendEvent(name: "windowShade", value: "closed", isStateChange: true)
 }
 
-def unknown() {
-	// TODO: Add some "fuzzing" logic so that this gets hit every now and then?
-	log.debug "windowShade: unknown"
-	sendEvent(name: "windowShade", value: "unknown", isStateChange: true)
-}

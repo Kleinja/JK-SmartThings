@@ -44,20 +44,17 @@ metadata {
 			}
 		}
 
-		valueTile("blank", "device.blank", width: 2, height: 2, decoration: "flat") {
-			state "default", label: ""	
-		}
 		valueTile("commandsLabel", "device.commands", width: 6, height: 1, decoration: "flat") {
 			state "default", label: "Commands:"	
 		}
 		standardTile("windowShadeOpen", "device.windowShade", width: 2, height: 2, decoration: "flat") {
-			state "default", label: "open", action:"open", icon:"st.Home.home2"
+			state "default", label: "Open", action:"open", icon:"st.shades.shade-opening"
 		}
 		standardTile("windowShadeClose", "device.windowShade", width: 2, height: 2, decoration: "flat") {
-			state "default", label: "close", action:"close", icon:"st.Home.home2"
+			state "default", label: "Close", action:"close", icon:"st.shades.shade-closing"
 		}
-		standardTile("windowShadePreset", "device.windowShadePreset", width: 2, height: 2, decoration: "flat") {
-			state "default", label: "preset", action:"presetPosition", icon:"st.Home.home2"
+		standardTile("windowShadePartiallyOpen", "device.windowShadePartiallyOpen", width: 2, height: 2, decoration: "flat") {
+			state "default", label: "Partially Open", action:"partially open", icon:"st.shades.shade-opening"
 		}
 
 		valueTile("statesLabel", "device.states", width: 6, height: 1, decoration: "flat") {
@@ -67,7 +64,7 @@ metadata {
 		main(["windowShade"])
 		details(["windowShade",
 				 "commandsLabel",
-				 "windowShadeOpen", "windowShadeClose", "windowShadePreset"])
+				 "windowShadeOpen", "windowShadeClose", "windowShadePartiallyOpen"])
 
 	}
 }
